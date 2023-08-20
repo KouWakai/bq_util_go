@@ -10,17 +10,17 @@ import (
 	"cloud.google.com/go/bigquery"
 )
 
-func main() {
+func Load(project_id string,load_datasetid string,load_tableid string,schema_path string) {
 	// Google Cloudの認証キーファイルへのパスを指定してクライアントを作成します
 	ctx := context.Background()
-	client, err := bigquery.NewClient(ctx, "project-name")
+	client, err := bigquery.NewClient(ctx, project_id)
 	if err != nil {
 		log.Fatalf("Failed to create BigQuery client: %v", err)
 	}
 
 	// スキーマを取得するテーブルの情報を指定します
-	datasetID := "dataset"
-	tableID := "tableid"
+	datasetID := load_datasetid
+	tableID := load_tableid
 
 	// テーブルのメタデータを取得します
 	meta, err := client.Dataset(datasetID).Table(tableID).Metadata(ctx)
@@ -35,7 +35,7 @@ func main() {
 	}
 
 	// JSONファイルにスキーマを保存します
-	err = ioutil.WriteFile("./schema.json", schemaJSON, 0644)
+	err = ioutil.WriteFile(schema_path, schemaJSON, 0644)
 	if err != nil {
 		log.Fatalf("Failed to write schema to file: %v", err)
 	}

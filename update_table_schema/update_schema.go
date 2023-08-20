@@ -42,17 +42,17 @@ func fieldTypeToString(ft bigquery.FieldType) string {
 	}
 }
 
-func main() {
+func Update(project_id string,load_datasetid string,load_tableid string,schema_path string) {
 	// Google Cloudの認証キーファイルへのパスを指定してクライアントを作成します
 	ctx := context.Background()
-	client, err := bigquery.NewClient(ctx, "project-name")
+	client, err := bigquery.NewClient(ctx, project_id)
 	if err != nil {
 		log.Fatalf("Failed to create BigQuery client: %v", err)
 	}
 
 	// スキーマを取得するテーブルの情報を指定します
-	datasetID := "dataset"
-	tableID := "tableid"
+	datasetID := load_datasetid
+	tableID := load_tableid
 
 	// テーブルのメタデータを取得します
 	meta, err := client.Dataset(datasetID).Table(tableID).Metadata(ctx)
@@ -61,7 +61,7 @@ func main() {
 	}
 
 	// JSONファイルからスキーマを読み込みます
-	jsonSchema, err := ioutil.ReadFile("schema.json")
+	jsonSchema, err := ioutil.ReadFile(schema_path)
 	if err != nil {
 		log.Fatalf("Failed to read schema file: %v", err)
 	}
