@@ -42,8 +42,8 @@ func fieldTypeToString(ft bigquery.FieldType) string {
 	}
 }
 
-func Update(project_id string,load_datasetid string,load_tableid string,schema_path string) {
-	// Google Cloudの認証キーファイルへのパスを指定してクライアントを作成します
+func Update(project_id string, load_datasetid string, load_tableid string, schema_path string) {
+	// Google Cloudのクライアントを作成します
 	ctx := context.Background()
 	client, err := bigquery.NewClient(ctx, project_id)
 	if err != nil {
